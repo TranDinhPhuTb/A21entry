@@ -10,7 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171231164651) do
+ActiveRecord::Schema.define(version: 20180102144222) do
+
+  create_table "games", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
+    t.integer  "match_id"
+    t.integer  "score"
+    t.integer  "winner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_games_on_match_id", using: :btree
+    t.index ["winner_id"], name: "index_games_on_winner_id", using: :btree
+  end
+
+  create_table "matches", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
+    t.integer  "team_a_id"
+    t.integer  "team_b_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_a_id"], name: "index_matches_on_team_a_id", using: :btree
+    t.index ["team_b_id"], name: "index_matches_on_team_b_id", using: :btree
+  end
+
+  create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "team_players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
+    t.integer  "team_id"
+    t.integer  "player_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_team_players_on_player_id", using: :btree
+    t.index ["team_id"], name: "index_team_players_on_team_id", using: :btree
+  end
+
+  create_table "teams", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin" do |t|
     t.string   "email",                  default: "", null: false
@@ -31,4 +71,10 @@ ActiveRecord::Schema.define(version: 20171231164651) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "games", "matches"
+  add_foreign_key "games", "teams", column: "winner_id"
+  add_foreign_key "matches", "teams", column: "team_a_id"
+  add_foreign_key "matches", "teams", column: "team_b_id"
+  add_foreign_key "team_players", "players"
+  add_foreign_key "team_players", "teams"
 end

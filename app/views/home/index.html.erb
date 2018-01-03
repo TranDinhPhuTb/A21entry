@@ -1,1 +1,16 @@
 <%= render "common/menu" %>
+<h1>Teams ranking:</h1>
+<table>
+		<tr>
+			<td>Team name</td>
+			<td>Match plays</td>
+			<td>Win ratio</td>
+		</tr>
+	<% @teams.each do |team| %>
+		<tr>
+			<td><%= team["name"] %></td>
+			<td><%= team["match_play"] %></td>
+			<td><%= team["win_ratio"] %> %</td>
+		</tr>
+	<% end %>
+</table>

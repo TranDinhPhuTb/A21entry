@@ -1,0 +1,11 @@
+<%= render "common/menu" %>
+<%= link_to "Create new match", new_match_path %>
+<table>
+<% @matchs.each do |match| %>
+	<tr>
+		<td><%= match.team_a.name %> VS <%= match.team_b.name %></td>
+		<td><%= link_to "Edit", edit_match_path(match.id) %></td>
+		<td><%= link_to "Delete", match_path(match.id), method: :delete, data: { confirm: "Are you sure you want to delete this match?" } %></td>
+	</tr>
+<% end %>
+</table>

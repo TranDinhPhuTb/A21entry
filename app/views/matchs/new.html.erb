@@ -1,0 +1,16 @@
+<%= render "common/menu" %>
+<%= form_for(@match, url: matchs_path) do |form| %>
+<%= form.label :team_a_id, "First team" %>
+<%= form.select :team_a_id, @list_teams, :prompt => "Select" %><br>
+<%= form.label :team_b_id, "Second team" %>
+<%= form.select :team_b_id, @list_teams, :prompt => "Select" %><br>
+<br>
+<% (1..3).each do |game_no| %>
+<%= label_tag "Game #{game_no} result:" %><br>
+<%= label_tag "Score:" %>
+<%= text_field_tag "game[][score]" %><br>
+<%= label_tag "Winner:" %>
+<%= select_tag "game[][winner]", options_for_select(@list_teams), :prompt => "Select" %><br><br>
+<% end %>
+<%= form.submit %>
+<% end %>
