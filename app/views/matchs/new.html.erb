@@ -1,4 +1,12 @@
 <%= render "common/menu" %>
+<% if flash[:err] %>
+	<ol>
+	<% flash[:err].each do |err| %>
+		<li><%= err %></li>
+	<% end %>
+	</ol>
+<% end %>
+
 <%= form_for(@match, url: matchs_path) do |form| %>
 <%= form.label :team_a_id, "First team" %>
 <%= form.select :team_a_id, @list_teams, :prompt => "Select" %><br>

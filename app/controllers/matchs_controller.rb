@@ -1,4 +1,5 @@
 class MatchsController < ApplicationController
+include Constant
 	def index
 		@matchs = Match.all
 	end
@@ -9,6 +10,12 @@ class MatchsController < ApplicationController
 	end
 
 	def create
+		create_is_invalid = MatchService.new.create_invalid?(params: params)
+		if create_is_invalid
+			flash[:err] = create_is_invalid
+			redirect_to action: "new"
+			return
+		end
 		@match = Match.new
 		@match.team_a_id = params[:match][:team_a_id]
 		@match.team_b_id = params[:match][:team_b_id]
@@ -32,10 +39,17 @@ class MatchsController < ApplicationController
 		@match = Match.find(params[:id])
 		@list_teams = Team.all.collect{|item| [item.name, item.id]}
 		@games = @match.games
+		@max_game_per_match = MAX_GAME_PER_MATCH
 	end
 
 	def update
 		@match = Match.find(params[:id])
+		update_is_invalid = MatchService.new.update_invalid?(params: params)
+		if update_is_invalid
+			flash[:err] = update_is_invalid
+			redirect_to action: "edit", id: @match.id
+			return
+		end
 		@match.team_a_id = params[:match][:team_a_id]
 		@match.team_b_id = params[:match][:team_b_id]
 		@match.save

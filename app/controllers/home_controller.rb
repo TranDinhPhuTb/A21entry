@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	WINS_GAME_CONDITION = 2
+include Constant
 	def index
 		teams = Team.all
 		matchs = Match.all
@@ -18,7 +18,7 @@ class HomeController < ApplicationController
 					wins += 1
 				end
 			end
-			current_team["win_ratio"] = wins / relevant_matchs.count.to_f
+			current_team["win_ratio"] = ( wins / relevant_matchs.count.to_f * 100 ).round(2)
 			@teams.push	current_team
 		end
 		@teams = @teams.sort_by{|team| team["win_ratio"]}.reverse

@@ -1,0 +1,4 @@
+module Constant
+	WINS_GAME_CONDITION = 2
+	MAX_GAME_PER_MATCH = 3
+end
